@@ -1,0 +1,5 @@
+# Tested with Python 3.12, pandas 3.0.2, numpy 2.4.4, scikit-learn 1.8.0, pytest 9.1.1
+# The dashboard is served by the Python standard library; three.js is bundled in web/vendor.
+pandas>=2.2,<4
+numpy>=1.26,<3
+scikit-learn>=1.4,<2

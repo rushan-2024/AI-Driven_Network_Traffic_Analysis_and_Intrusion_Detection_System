@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-Driven Network Traffic Analysis and Intrusion Detection System</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a class="skip" href="#results">Skip to results</a>
+
+<header class="topbar">
+  <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">Network IDS Console</span></div>
+  <div class="top-actions">
+    <span class="chip" title="This tool reads CSV files. It does not capture or monitor live traffic.">Offline file analysis</span>
+    <button class="btn small ghost" id="btn-tour" type="button">Take the tour</button>
+    <button class="btn small" id="btn-help" type="button">Help and glossary</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="eyebrow">Cybersecurity research prototype</p>
+    <h1>AI-Driven Network Traffic Analysis and Intrusion Detection System</h1>
+    <p class="lede">Pick a sample scenario or upload your own flow data. Rules and an anomaly model flag port scans, floods and repeated login failures, and every alert comes with its evidence.</p>
+
+    <ol class="how" aria-label="How it works">
+      <li><b>Pick</b> an example or your own file</li>
+      <li><b>Read</b> the plain-English summary</li>
+      <li><b>Open</b> any alert to see why and what to check</li>
+    </ol>
+    <div class="step"><span class="step-n">1</span><h2>Choose data</h2></div>
+    <p class="small muted hint-line">Click a card to analyse it straight away. Not sure where to start? Choose Scenario 2.</p>
+    <div id="scenario-cards" class="cards" role="list"></div>
+    <div class="upload-toggle">
+      <button id="btn-upload-toggle" class="btn ghost" type="button" aria-expanded="false" aria-controls="upload-panel">Analyse your own CSV file</button>
+    </div>
+    <div id="upload-panel" class="upload-panel" hidden>
+      <div class="drops">
+        <label class="drop" id="drop-flows" for="file-flows">
+          <span class="drop-title">Flow records <em>required</em></span>
+          <span class="drop-hint" id="name-flows">Drop a CSV here or click to choose</span>
+          <input id="file-flows" type="file" accept=".csv,text/csv">
+        </label>
+        <label class="drop" id="drop-auth" for="file-auth">
+          <span class="drop-title">Login events <em>optional</em></span>
+          <span class="drop-hint" id="name-auth">Needed for the login-failure rule</span>
+          <input id="file-auth" type="file" accept=".csv,text/csv">
+        </label>
+      </div>
+      <p class="small muted">Not sure about the format? Download an example: <a href="/api/template.csv?kind=flows" download>flow records</a> or <a href="/api/template.csv?kind=auth" download>login events</a>. Flow columns: <code>timestamp, src_ip, dst_ip, dst_port, protocol, packets, bytes, duration</code>. Login columns: <code>timestamp, src_ip, dst_ip, service, username, outcome</code>. Add <code>attack_type</code> to get an evaluation. Samples are in <code>data/samples/</code>.</p>
+      <button id="btn-analyse-upload" class="btn primary" type="button">Analyse files</button>
+    </div>
+    <div id="banner" class="banner" role="alert" hidden></div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stage" id="stage">
+      <div id="stage-canvas" class="stage-canvas" aria-label="3D view of the hosts in the analysed file"></div>
+      <div class="stage-top">
+        <span class="stage-title">Host map</span>
+        <span class="stage-sub" id="stage-sub">Hosts in the analysed file, not a live network</span>
+      </div>
+      <div class="legend" id="legend">
+        <span><i class="dot d-normal"></i>Host</span><span><i class="dot d-suspect"></i>Source in alert</span><span><i class="dot d-target"></i>Target of alert</span>
+      </div>
+      <div class="stage-hint">Drag to rotate, scroll to zoom, click a host to see its alerts</div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="stage-msg" id="stage-msg" hidden></div>
+      <div class="loading" id="loading" hidden><span class="spinner"></span><span>Analysing...</span></div>
+    </div>
+  </div>
+</section>
+
+<main id="results" class="results" hidden>
+  <div class="runline">
+    <div><span class="runlabel" id="run-label"></span><span class="runmeta" id="run-meta"></span></div>
+    <details class="issues" id="issues" hidden><summary id="issues-summary"></summary><ul id="issues-list"></ul></details>
+  </div>
+
+  <section class="verdict" id="verdict" aria-live="polite"></section>
+
+  <div class="tiles" id="tiles"></div>
+
+  <nav class="tabs" role="tablist" aria-label="Result sections">
+    <button class="tab active" role="tab" id="tab-overview" aria-selected="true" aria-controls="panel-overview" data-tab="overview">Summary</button>
+    <button class="tab" role="tab" id="tab-alerts" aria-selected="false" aria-controls="panel-alerts" data-tab="alerts">Alerts</button>
+    <button class="tab" role="tab" id="tab-anomaly" aria-selected="false" aria-controls="panel-anomaly" data-tab="anomaly">Unusual behaviour</button>
+    <button class="tab" role="tab" id="tab-evaluation" aria-selected="false" aria-controls="panel-evaluation" data-tab="evaluation">Accuracy check</button>
+    <button class="tab" role="tab" id="tab-settings" aria-selected="false" aria-controls="panel-settings" data-tab="settings">Settings</button>
+  </nav>
+
+  <section class="panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview"></section>
+  <section class="panel" id="panel-alerts" role="tabpanel" aria-labelledby="tab-alerts" hidden></section>
+  <section class="panel" id="panel-anomaly" role="tabpanel" aria-labelledby="tab-anomaly" hidden></section>
+  <section class="panel" id="panel-evaluation" role="tabpanel" aria-labelledby="tab-evaluation" hidden></section>
+  <section class="panel" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" hidden></section>
+</main>
+
+<footer class="footer">All bundled data is synthetic. Results describe behaviour on that data only and do not estimate real-network performance. Severity is a heuristic rating, not a probability.</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+  <div class="drawer-head"><h2 id="drawer-title">Alert</h2><button class="btn ghost icon" id="drawer-close" type="button" aria-label="Close alert details">Close</button></div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+
+<aside class="drawer" id="help-drawer" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden>
+  <div class="drawer-head"><h2 id="help-title">Help and glossary</h2><button class="btn ghost icon" id="help-close" type="button" aria-label="Close help">Close</button></div>
+  <div class="drawer-body" id="help-body"></div>
+</aside>
+
+<div class="tour" id="tour" hidden>
+  <div class="tour-hole" id="tour-hole"></div>
+  <div class="tour-card" id="tour-card" role="dialog" aria-live="polite" aria-labelledby="tour-title">
+    <div class="tour-count" id="tour-count"></div>
+    <h3 id="tour-title"></h3>
+    <p id="tour-text"></p>
+    <div class="tour-actions">
+      <button class="btn small ghost" id="tour-skip" type="button">Skip tour</button>
+      <span class="spacer"></span>
+      <button class="btn small" id="tour-back" type="button">Back</button>
+      <button class="btn small primary" id="tour-next" type="button">Next</button>
+    </div>
+  </div>
+</div>
+
+<script src="/vendor/three.min.js"></script>
+<script src="/charts.js"></script>
+<script src="/graph3d.js"></script>
+<script src="/help.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

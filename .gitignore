@@ -1,0 +1,17 @@
+# Environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/secrets.toml
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+# Local outputs
+alerts.csv
+findings.csv
+*.log

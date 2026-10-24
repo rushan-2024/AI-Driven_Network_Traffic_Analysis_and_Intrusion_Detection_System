@@ -1,0 +1,1568 @@
+{
+  "config": {
+    "window_seconds": 60,
+    "scan_min_ports": 20,
+    "scan_min_hosts": 20,
+    "scan_max_mean_packets": 3.0,
+    "dos_min_flows": 200,
+    "dos_min_flow_rate": 30.0,
+    "rate_bin_seconds": 5,
+    "dos_max_mean_packets": 5.0,
+    "ddos_min_flows": 500,
+    "ddos_min_sources": 10,
+    "ddos_max_top_source_share": 0.5,
+    "auth_window_seconds": 300,
+    "auth_min_failures": 8,
+    "auth_spray_min_users": 5,
+    "auth_success_grace_seconds": 60,
+    "anomaly_enabled": true,
+    "anomaly_quantile": 0.995,
+    "anomaly_min_training_windows": 30,
+    "random_seed": 42
+  },
+  "model": {
+    "baseline_windows": 400,
+    "quantile": 0.995,
+    "features": [
+      "flows",
+      "unique_dst_ports",
+      "unique_dst_hosts",
+      "packets",
+      "bytes",
+      "mean_packets",
+      "mean_bytes",
+      "mean_duration",
+      "flow_rate",
+      "packet_rate",
+      "byte_rate",
+      "udp_frac",
+      "icmp_frac"
+    ],
+    "seed": 42,
+    "n_estimators": 200,
+    "threshold": 0.0918,
+    "validation_windows": 200,
+    "validation_flagged": 0,
+    "validation_flag_rate": 0.0,
+    "baseline_source": "baseline_training_flows.csv"
+  },
+  "baseline_profile": {
+    "baseline_training_flows": {
+      "max_distinct_ports_per_host_window": 2,
+      "max_distinct_hosts_per_port_window": 1,
+      "max_peak_flow_rate_single_source": 0.8,
+      "flows": 2825
+    },
+    "baseline_validation_flows": {
+      "max_distinct_ports_per_host_window": 2,
+      "max_distinct_hosts_per_port_window": 1,
+      "max_peak_flow_rate_single_source": 0.8,
+      "flows": 1373
+    },
+    "benign_auth": {
+      "max_failures_per_source_window": 1
+    }
+  },
+  "scenarios": {
+    "benign": {
+      "title": "Normal traffic baseline",
+      "alerts": 2,
+      "alerts_by_rule": {
+        "ML-IF1": 2
+      },
+      "rules": {
+        "flows": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 1396,
+            "fn": 0,
+            "n": 1396,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1396,
+              "fn": 0,
+              "n": 1396,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1396,
+              "fn": 0,
+              "n": 1396,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      },
+      "anomaly": {
+        "flows": {
+          "overall": {
+            "tp": 0,
+            "fp": 6,
+            "tn": 1390,
+            "fn": 0,
+            "n": 1396,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": 0.0,
+            "recall": null,
+            "f1": null,
+            "accuracy": 0.995702005730659,
+            "false_positive_rate": 0.004297994269340974
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1396,
+              "fn": 0,
+              "n": 1396,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1396,
+              "fn": 0,
+              "n": 1396,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            159,
+            223,
+            233,
+            234,
+            749
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      },
+      "hybrid": {
+        "flows": {
+          "overall": {
+            "tp": 0,
+            "fp": 6,
+            "tn": 1390,
+            "fn": 0,
+            "n": 1396,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": 0.0,
+            "recall": null,
+            "f1": null,
+            "accuracy": 0.995702005730659,
+            "false_positive_rate": 0.004297994269340974
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1396,
+              "fn": 0,
+              "n": 1396,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1396,
+              "fn": 0,
+              "n": 1396,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            159,
+            223,
+            233,
+            234,
+            749
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      }
+    },
+    "port_scan": {
+      "title": "Reconnaissance and port scanning",
+      "alerts": 6,
+      "alerts_by_rule": {
+        "ML-IF1": 4,
+        "SCAN-H1": 1,
+        "SCAN-V1": 1
+      },
+      "rules": {
+        "flows": {
+          "overall": {
+            "tp": 360,
+            "fp": 0,
+            "tn": 1421,
+            "fn": 0,
+            "n": 1781,
+            "positives": 360,
+            "prevalence": 0.2021336327905671,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 360,
+              "fp": 0,
+              "tn": 1421,
+              "fn": 0,
+              "n": 1781,
+              "positives": 360,
+              "prevalence": 0.2021336327905671,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1421,
+              "fn": 0,
+              "n": 1421,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      },
+      "anomaly": {
+        "flows": {
+          "overall": {
+            "tp": 360,
+            "fp": 2,
+            "tn": 1419,
+            "fn": 0,
+            "n": 1781,
+            "positives": 360,
+            "prevalence": 0.2021336327905671,
+            "precision": 0.994475138121547,
+            "recall": 1.0,
+            "f1": 0.9972299168975068,
+            "accuracy": 0.9988770353733858,
+            "false_positive_rate": 0.0014074595355383533
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1421,
+              "fn": 360,
+              "n": 1781,
+              "positives": 360,
+              "prevalence": 0.2021336327905671,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.7978663672094329,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1421,
+              "fn": 0,
+              "n": 1421,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            59,
+            713
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      },
+      "hybrid": {
+        "flows": {
+          "overall": {
+            "tp": 360,
+            "fp": 2,
+            "tn": 1419,
+            "fn": 0,
+            "n": 1781,
+            "positives": 360,
+            "prevalence": 0.2021336327905671,
+            "precision": 0.994475138121547,
+            "recall": 1.0,
+            "f1": 0.9972299168975068,
+            "accuracy": 0.9988770353733858,
+            "false_positive_rate": 0.0014074595355383533
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 360,
+              "fp": 0,
+              "tn": 1421,
+              "fn": 0,
+              "n": 1781,
+              "positives": 360,
+              "prevalence": 0.2021336327905671,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1421,
+              "fn": 0,
+              "n": 1421,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            59,
+            713
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      }
+    },
+    "dos": {
+      "title": "Denial of service",
+      "alerts": 9,
+      "alerts_by_rule": {
+        "DOS-D1": 1,
+        "DOS-S1": 1,
+        "ML-IF1": 7
+      },
+      "rules": {
+        "flows": {
+          "overall": {
+            "tp": 2200,
+            "fp": 0,
+            "tn": 1476,
+            "fn": 0,
+            "n": 3676,
+            "positives": 2200,
+            "prevalence": 0.5984766050054406,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1476,
+              "fn": 0,
+              "n": 1476,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 2200,
+              "fp": 0,
+              "tn": 1476,
+              "fn": 0,
+              "n": 3676,
+              "positives": 2200,
+              "prevalence": 0.5984766050054406,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      },
+      "anomaly": {
+        "flows": {
+          "overall": {
+            "tp": 1300,
+            "fp": 7,
+            "tn": 1469,
+            "fn": 900,
+            "n": 3676,
+            "positives": 2200,
+            "prevalence": 0.5984766050054406,
+            "precision": 0.9946442234123948,
+            "recall": 0.5909090909090909,
+            "f1": 0.7413743940690048,
+            "accuracy": 0.7532644178454843,
+            "false_positive_rate": 0.0047425474254742545
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1476,
+              "fn": 0,
+              "n": 1476,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1476,
+              "fn": 2200,
+              "n": 3676,
+              "positives": 2200,
+              "prevalence": 0.5984766050054406,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.4015233949945593,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            240,
+            2104,
+            3265,
+            3271,
+            3313
+          ],
+          "false_negative_ids": [
+            2155,
+            2156,
+            2157,
+            2158,
+            2159
+          ]
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      },
+      "hybrid": {
+        "flows": {
+          "overall": {
+            "tp": 2200,
+            "fp": 7,
+            "tn": 1469,
+            "fn": 0,
+            "n": 3676,
+            "positives": 2200,
+            "prevalence": 0.5984766050054406,
+            "precision": 0.9968282736746715,
+            "recall": 1.0,
+            "f1": 0.9984116178806444,
+            "accuracy": 0.9980957562568009,
+            "false_positive_rate": 0.0047425474254742545
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1476,
+              "fn": 0,
+              "n": 1476,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 2200,
+              "fp": 0,
+              "tn": 1476,
+              "fn": 0,
+              "n": 3676,
+              "positives": 2200,
+              "prevalence": 0.5984766050054406,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            240,
+            2104,
+            3265,
+            3271,
+            3313
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 60,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 60,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      }
+    },
+    "auth_failures": {
+      "title": "Repeated authentication failures",
+      "alerts": 3,
+      "alerts_by_rule": {
+        "AUTH-F1": 2,
+        "ML-IF1": 1
+      },
+      "rules": {
+        "flows": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 1407,
+            "fn": 0,
+            "n": 1407,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1407,
+              "fn": 0,
+              "n": 1407,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1407,
+              "fn": 0,
+              "n": 1407,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 119,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 179,
+            "positives": 119,
+            "prevalence": 0.664804469273743,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 119,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 179,
+              "positives": 119,
+              "prevalence": 0.664804469273743,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      },
+      "anomaly": {
+        "flows": {
+          "overall": {
+            "tp": 0,
+            "fp": 4,
+            "tn": 1403,
+            "fn": 0,
+            "n": 1407,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": 0.0,
+            "recall": null,
+            "f1": null,
+            "accuracy": 0.9971570717839374,
+            "false_positive_rate": 0.0028429282160625444
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1407,
+              "fn": 0,
+              "n": 1407,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1407,
+              "fn": 0,
+              "n": 1407,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            1040,
+            1041,
+            1090,
+            1097
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 60,
+            "fn": 119,
+            "n": 179,
+            "positives": 119,
+            "prevalence": 0.664804469273743,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "accuracy": 0.33519553072625696,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 60,
+              "fn": 119,
+              "n": 179,
+              "positives": 119,
+              "prevalence": 0.664804469273743,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.33519553072625696,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": [
+            17,
+            18,
+            19,
+            20,
+            22
+          ]
+        }
+      },
+      "hybrid": {
+        "flows": {
+          "overall": {
+            "tp": 0,
+            "fp": 4,
+            "tn": 1403,
+            "fn": 0,
+            "n": 1407,
+            "positives": 0,
+            "prevalence": 0.0,
+            "precision": 0.0,
+            "recall": null,
+            "f1": null,
+            "accuracy": 0.9971570717839374,
+            "false_positive_rate": 0.0028429282160625444
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1407,
+              "fn": 0,
+              "n": 1407,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 1407,
+              "fn": 0,
+              "n": 1407,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            1040,
+            1041,
+            1090,
+            1097
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 119,
+            "fp": 0,
+            "tn": 60,
+            "fn": 0,
+            "n": 179,
+            "positives": 119,
+            "prevalence": 0.664804469273743,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "accuracy": 1.0,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 119,
+              "fp": 0,
+              "tn": 60,
+              "fn": 0,
+              "n": 179,
+              "positives": 119,
+              "prevalence": 0.664804469273743,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": []
+        }
+      }
+    },
+    "ambiguous": {
+      "title": "Ambiguous and borderline cases",
+      "alerts": 28,
+      "alerts_by_rule": {
+        "AUTH-F1": 1,
+        "ML-IF1": 26,
+        "SCAN-V1": 1
+      },
+      "rules": {
+        "flows": {
+          "overall": {
+            "tp": 0,
+            "fp": 150,
+            "tn": 3489,
+            "fn": 100,
+            "n": 3739,
+            "positives": 100,
+            "prevalence": 0.026745119015779622,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": null,
+            "accuracy": 0.933137202460551,
+            "false_positive_rate": 0.041220115416323165
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 150,
+              "tn": 3489,
+              "fn": 100,
+              "n": 3739,
+              "positives": 100,
+              "prevalence": 0.026745119015779622,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.933137202460551,
+              "false_positive_rate": 0.041220115416323165
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 3639,
+              "fn": 0,
+              "n": 3639,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            764,
+            765,
+            766,
+            768,
+            769
+          ],
+          "false_negative_ids": [
+            52,
+            107,
+            156,
+            208,
+            265
+          ]
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 14,
+            "tn": 126,
+            "fn": 12,
+            "n": 152,
+            "positives": 12,
+            "prevalence": 0.07894736842105263,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": null,
+            "accuracy": 0.8289473684210527,
+            "false_positive_rate": 0.1
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 14,
+              "tn": 126,
+              "fn": 12,
+              "n": 152,
+              "positives": 12,
+              "prevalence": 0.07894736842105263,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.8289473684210527,
+              "false_positive_rate": 0.1
+            }
+          },
+          "false_positive_ids": [
+            68,
+            70,
+            74,
+            75,
+            82
+          ],
+          "false_negative_ids": [
+            0,
+            16,
+            22,
+            34,
+            45
+          ]
+        }
+      },
+      "anomaly": {
+        "flows": {
+          "overall": {
+            "tp": 100,
+            "fp": 172,
+            "tn": 3467,
+            "fn": 0,
+            "n": 3739,
+            "positives": 100,
+            "prevalence": 0.026745119015779622,
+            "precision": 0.36764705882352944,
+            "recall": 1.0,
+            "f1": 0.5376344086021506,
+            "accuracy": 0.953998395292859,
+            "false_positive_rate": 0.047265732344050564
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 3639,
+              "fn": 100,
+              "n": 3739,
+              "positives": 100,
+              "prevalence": 0.026745119015779622,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.9732548809842204,
+              "false_positive_rate": 0.0
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 3639,
+              "fn": 0,
+              "n": 3639,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            501,
+            543,
+            764,
+            765,
+            766
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 140,
+            "fn": 12,
+            "n": 152,
+            "positives": 12,
+            "prevalence": 0.07894736842105263,
+            "precision": null,
+            "recall": 0.0,
+            "f1": null,
+            "accuracy": 0.9210526315789473,
+            "false_positive_rate": 0.0
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 140,
+              "fn": 12,
+              "n": 152,
+              "positives": 12,
+              "prevalence": 0.07894736842105263,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.9210526315789473,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [],
+          "false_negative_ids": [
+            0,
+            16,
+            22,
+            34,
+            45
+          ]
+        }
+      },
+      "hybrid": {
+        "flows": {
+          "overall": {
+            "tp": 100,
+            "fp": 172,
+            "tn": 3467,
+            "fn": 0,
+            "n": 3739,
+            "positives": 100,
+            "prevalence": 0.026745119015779622,
+            "precision": 0.36764705882352944,
+            "recall": 1.0,
+            "f1": 0.5376344086021506,
+            "accuracy": 0.953998395292859,
+            "false_positive_rate": 0.047265732344050564
+          },
+          "per_category": {
+            "port_scan": {
+              "tp": 0,
+              "fp": 150,
+              "tn": 3489,
+              "fn": 100,
+              "n": 3739,
+              "positives": 100,
+              "prevalence": 0.026745119015779622,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.933137202460551,
+              "false_positive_rate": 0.041220115416323165
+            },
+            "dos": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 3639,
+              "fn": 0,
+              "n": 3639,
+              "positives": 0,
+              "prevalence": 0.0,
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "accuracy": 1.0,
+              "false_positive_rate": 0.0
+            }
+          },
+          "false_positive_ids": [
+            501,
+            543,
+            764,
+            765,
+            766
+          ],
+          "false_negative_ids": []
+        },
+        "auth": {
+          "overall": {
+            "tp": 0,
+            "fp": 14,
+            "tn": 126,
+            "fn": 12,
+            "n": 152,
+            "positives": 12,
+            "prevalence": 0.07894736842105263,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": null,
+            "accuracy": 0.8289473684210527,
+            "false_positive_rate": 0.1
+          },
+          "per_category": {
+            "auth_failures": {
+              "tp": 0,
+              "fp": 14,
+              "tn": 126,
+              "fn": 12,
+              "n": 152,
+              "positives": 12,
+              "prevalence": 0.07894736842105263,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": null,
+              "accuracy": 0.8289473684210527,
+              "false_positive_rate": 0.1
+            }
+          },
+          "false_positive_ids": [
+            68,
+            70,
+            74,
+            75,
+            82
+          ],
+          "false_negative_ids": [
+            0,
+            16,
+            22,
+            34,
+            45
+          ]
+        }
+      }
+    }
+  },
+  "pooled": {
+    "rules": {
+      "flows": {
+        "tp": 2560,
+        "fp": 150,
+        "tn": 9189,
+        "fn": 100,
+        "n": 11999,
+        "positives": 2660,
+        "prevalence": 0.22168514042836904,
+        "precision": 0.9446494464944649,
+        "recall": 0.9624060150375939,
+        "f1": 0.9534450651769086,
+        "accuracy": 0.9791649304108676,
+        "false_positive_rate": 0.016061676839061997
+      },
+      "auth": {
+        "tp": 119,
+        "fp": 14,
+        "tn": 366,
+        "fn": 12,
+        "n": 511,
+        "positives": 131,
+        "prevalence": 0.2563600782778865,
+        "precision": 0.8947368421052632,
+        "recall": 0.9083969465648855,
+        "f1": 0.9015151515151515,
+        "accuracy": 0.949119373776908,
+        "false_positive_rate": 0.03684210526315789
+      }
+    },
+    "anomaly": {
+      "flows": {
+        "tp": 1760,
+        "fp": 191,
+        "tn": 9148,
+        "fn": 900,
+        "n": 11999,
+        "positives": 2660,
+        "prevalence": 0.22168514042836904,
+        "precision": 0.902101486417222,
+        "recall": 0.6616541353383458,
+        "f1": 0.7633918889611797,
+        "accuracy": 0.9090757563130261,
+        "false_positive_rate": 0.02045186850840561
+      },
+      "auth": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 380,
+        "fn": 131,
+        "n": 511,
+        "positives": 131,
+        "prevalence": 0.2563600782778865,
+        "precision": null,
+        "recall": 0.0,
+        "f1": null,
+        "accuracy": 0.7436399217221135,
+        "false_positive_rate": 0.0
+      }
+    },
+    "hybrid": {
+      "flows": {
+        "tp": 2660,
+        "fp": 191,
+        "tn": 9148,
+        "fn": 0,
+        "n": 11999,
+        "positives": 2660,
+        "prevalence": 0.22168514042836904,
+        "precision": 0.9330059628200631,
+        "recall": 1.0,
+        "f1": 0.9653420431863545,
+        "accuracy": 0.9840820068339028,
+        "false_positive_rate": 0.02045186850840561
+      },
+      "auth": {
+        "tp": 119,
+        "fp": 14,
+        "tn": 366,
+        "fn": 12,
+        "n": 511,
+        "positives": 131,
+        "prevalence": 0.2563600782778865,
+        "precision": 0.8947368421052632,
+        "recall": 0.9083969465648855,
+        "f1": 0.9015151515151515,
+        "accuracy": 0.949119373776908,
+        "false_positive_rate": 0.03684210526315789
+      }
+    }
+  }
+}
