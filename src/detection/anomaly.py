@@ -52,7 +52,8 @@ class AnomalyModel:
 
     @staticmethod
     def _matrix(feats: pd.DataFrame) -> pd.DataFrame:
-        return feats[ANOMALY_FEATURES].replace([np.inf, -np.inf], np.nan)
+            x = feats[ANOMALY_FEATURES].astype(float)
+            return x.where(np.isfinite(x), np.nan)
 
     def fit(self, baseline_flows: pd.DataFrame) -> dict:
         feats = window_features(baseline_flows, self.cfg.window_seconds)
